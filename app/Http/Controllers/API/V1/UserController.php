@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\V1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\UserResource;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
+use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
@@ -17,8 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //сдесь надо использовать коллекцию, а не ресурс
-        $result = UserResource::collection(User::all());
+        $result = new UserCollection(User::all());
         return response()->json(['status' => 200, 'data' => $result], 200);
     }
 
@@ -54,7 +55,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $result = User::findorFail($id);
+        $result->nickname = $request->nickname;
+        $result->save();
+        return response()->json(['status' => 200, 'update' => 'success'], 200);
     }
 
     /**
@@ -66,7 +70,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
