@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -15,7 +17,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::all());
+        //сдесь надо использовать коллекцию, а не ресурс
+        $result = UserResource::collection(User::all());
+        return response()->json(['status' => 200, 'data' => $result], 200);
     }
 
     /**
@@ -37,7 +41,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return new UserResource(User::with('posts')->findOrFail($id));
+        $result = new UserResource(User::findOrFail($id));
+        return response()->json(['status' => 200, 'data' => $result], 200);
     }
 
     /**
@@ -58,8 +63,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

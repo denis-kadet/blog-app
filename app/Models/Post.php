@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * fillable
@@ -21,7 +22,13 @@ class Post extends Model
         'slug',
         'slug',
     ];
-
+    
+    /**
+     * dates
+     * мягкое удаление
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * hidden
