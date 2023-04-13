@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
-use Illuminate\Database\Eloquent\Model;
 
 class UserController extends Controller
 {
@@ -31,7 +32,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $store = new User();
+
+        $store->nickname = $request->nickname;
+        $store->firstname = $request->firstname;
+        $store->lastname = $request->lastname;
+        $store->avatar = $request->avatar;
+        $store->email = $request->email;
+        $store->telephone = $request->telephone;
+        $store->description = $request->description;
+        $store->location = $request->location;
+        $store->password = Hash::make($request->password);
+        //TODO! он должен быть уникальный, не совпадать
+        $store->remember_token = Str::random(10);
+
+        $store->save();
+
+        return response()->json(['status' => 201, 'created' => 'success'], 201);
     }
 
     /**
