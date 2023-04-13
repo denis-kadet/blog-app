@@ -7,9 +7,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
+use Exception;
 
 class UserController extends Controller
 {
@@ -20,7 +22,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $result = new UserCollection(User::all());
+        try{
+            $result = new UserCollection(User::all());
+        }catch(Exception $e){
+            return response()->json(['status' => 404, 'errors' => $e], 404);
+        }
         return response()->json(['status' => 200, 'data' => $result], 200);
     }
 
@@ -30,9 +36,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $store = new User();
+        $store = new User($request->all());
 
         $store->nickname = $request->nickname;
         $store->firstname = $request->firstname;
@@ -46,9 +52,12 @@ class UserController extends Controller
         //TODO! он должен быть уникальный, не совпадать
         $store->remember_token = Str::random(10);
 
-        $store->save();
-
+        if(!$store->save()){
+            return response()->json(['status' => 404, 'created' => 'failed'], 404);
+        }
+       
         return response()->json(['status' => 201, 'created' => 'success'], 201);
+       
     }
 
     /**
