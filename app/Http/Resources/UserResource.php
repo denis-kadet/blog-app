@@ -19,8 +19,12 @@ class UserResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'avatar' => $this->avatar,
-            'active' => $this->active,
-            'posts' => PostResource::collection($this->posts),
+            'email' => $this->email,
+            'telephone' => $this->telephone,
+            'description' => $this->description,
+            'location' => $this->location,
+            'admin' => $this->admin,
+            // 'posts' => PostResource::collection($this->posts),
         ];
     }
 }

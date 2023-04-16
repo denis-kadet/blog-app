@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use Exception;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
-use Exception;
+use App\Http\Requests\API\V1\StoreUserRequest;
+use App\Http\Requests\API\V1\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -68,7 +69,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $result = new UserResource(User::findOrFail($id));
+        
+        try{
+            $result = new UserResource(User::findOrFail($id));
+        }catch(Exception $e){
+            return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
+        }
+
         return response()->json(['status' => 200, 'data' => $result], 200);
     }
 
@@ -79,11 +86,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $result = User::findorFail($id);
-        $result->nickname = $request->nickname;
-        $result->save();
+        $result->firstname = $request->firstname;
+        $result->lastname = $request->lastname;
+        $result->avatar = $request->avatar;
+        $result->email = $request->email;
+        $result->telephone = $request->telephone;
+        $result->description = $request->description;
+        $result->location = $request->location;
+        $result->password = Hash::make($request->password);
+        
+
+        if(!$result->save()){
+            return response()->json(['status' => 404, 'update' => 'failed'], 404);
+        }
+
         return response()->json(['status' => 200, 'update' => 'success'], 200);
     }
 
@@ -95,7 +114,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        $user->deleteOrFail();
+
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

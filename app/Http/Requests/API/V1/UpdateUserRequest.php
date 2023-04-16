@@ -4,7 +4,7 @@ namespace App\Http\Requests\API\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'nickname' => 'required|unique:users|max:50|bail',
             'firstname' => 'present|max:20|bail',
             'lastname' => 'present|max:30|bail',
             'email' => 'required|unique:users|max:50|bail',//разобраться spoof and dns
@@ -34,11 +33,15 @@ class StoreUserRequest extends FormRequest
             'password' => 'required|max:255|bail',
         ];
     }
-
+    
+    /**
+     * messages
+     *
+     * @return void
+     */
     public function messages()
     {
         return[
-            'nickname.max' => 'Название не может быть более 50 символов',
             'firstname.max' => 'Название не может быть более 20 символов',
             'lastname.max' => 'Название не может быть более 30 символов',
             'telephone.max' => 'Название не может быть более 15 символов',
@@ -46,10 +49,8 @@ class StoreUserRequest extends FormRequest
             'location.max' => 'Название не может быть более 255 символов',
             'password.max' => 'Название не может быть более 255 символов',
 
-            'nickname.unique' => 'Данный никнейм существует',
             'email.unique' => 'Данный Email зарегистрированный',
             
-            'nickname.required' => 'Обязательное поле',
             'email.required' => 'Обязательное поле',
             'password.required' => 'Обязательное поле',
         ];
