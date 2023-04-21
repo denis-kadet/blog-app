@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use Cache;
 use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -11,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
+use Illuminate\Support\Facades\Redis; 
 use App\Http\Requests\API\V1\StoreUserRequest;
 use App\Http\Requests\API\V1\UpdateUserRequest;
 
@@ -69,14 +72,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        
         try{
-            $result = new UserResource(User::findOrFail($id));
+            $key = 'user_' . $id;
+
+            if (Cache::has($key)) {
+                return Cache::get($key);
+            }        
+     
+            $user = new UserResource(User::findOrFail($id));
+            Cache::tags(['user'])->put($key, $user, Carbon::now()->addMinutes(10));   
         }catch(Exception $e){
             return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }
-
-        return response()->json(['status' => 200, 'data' => $result], 200);
+        return response()->json(['status' => 200, 'data' => $user], 200);
     }
 
     /**
