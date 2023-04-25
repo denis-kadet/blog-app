@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'base_url' => env('APP_URL', 'http://localhost'),
+    'base_url' => 'http://localhost:8000',
 
     /*
     |--------------------------------------------------------------------------
@@ -49,7 +49,7 @@ return [
     |
     */
 
-    'auth_middleware' => 'auth:api',
+    'auth_middleware' => 'auth:sanctum',
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +68,10 @@ return [
         [
             'key' => 'Content-Type',
             'value' => 'application/json',
+        ],
+        [//данное значение нужно для работа с АПИ без логина и пароля
+            'key' => 'Referer',
+            'value' => '127.0.0.1:8000',
         ],
     ],
 
@@ -118,8 +122,8 @@ return [
     */
 
     'formdata' => [
-        // 'email' => 'john@example.com',
-        // 'password' => 'changeme',
+        'email' => 'max@mail.ru',
+        'password' => 'Pnrusvyhodcev(93)',
     ],
 
     /*

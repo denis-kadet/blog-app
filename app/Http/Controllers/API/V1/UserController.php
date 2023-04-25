@@ -6,12 +6,14 @@ use Cache;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
+use League\Flysystem\Util;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\API\V1\StoreUserRequest;
 use App\Http\Requests\API\V1\UpdateUserRequest;
 
@@ -45,20 +47,27 @@ class UserController extends Controller
         $store->nickname = $request->nickname;
         $store->firstname = $request->firstname;
         $store->lastname = $request->lastname;
-        $store->avatar = $request->avatar;
+
+        $path = $request->file('avatar')->store('uploads/avatar', 'public');
+        $path_normalize = Util::normalizePath($path);
+        $store->avatar = Storage::url($path_normalize);
+        
         $store->email = $request->email;
         $store->telephone = $request->telephone;
+
         $store->description = $request->description;
         $store->location = $request->location;
+
         $store->password = Hash::make($request->password);
         //TODO! он должен быть уникальный, не совпадать
         $store->remember_token = Str::random(10);
 
         if(!$store->save()){
+            //TODO! "message": "the given data was invalid.", Надо переименовать
             return response()->json(['status' => 404, 'created' => 'failed'], 404);
         }
        
-        return response()->json(['status' => 201, 'created' => 'success'], 201);
+        return response()->json(['status' => 201, 'created' => 'success', 'data' => $store], 201);
        
     }
 
@@ -91,6 +100,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
+        //TODO доработать проверку как при добавлении пользователя
         $result = User::findorFail($id);
         $result->firstname = $request->firstname;
         $result->lastname = $request->lastname;
@@ -117,6 +127,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        //TODO! надо реализовать при мягком удалении, удаление картинок пользователя
         $user->deleteOrFail();
 
         return response(null, Response::HTTP_NO_CONTENT);

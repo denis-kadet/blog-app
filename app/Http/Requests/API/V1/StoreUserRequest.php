@@ -25,13 +25,15 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'nickname' => 'required|unique:users|max:50|bail',
-            'firstname' => 'present|max:20|bail',
-            'lastname' => 'present|max:30|bail',
+            'firstname' => 'nullable|max:20|bail',
+            'lastname' => 'nullable|max:30|bail',
+            'avatar' => 'nullable|file|mimes:png,jpg,webp,svg|max:2048|bail', // TODO! size:512 перестал работать
             'email' => 'required|unique:users|max:50|bail',//разобраться spoof and dns
-            'telephone' => 'present|max:15|bail',
-            'description' => 'present|max:500|bail',
-            'location' => 'present|max:255|bail',
+            'telephone' => 'nullable|max:15|bail',
+            'description' => 'nullable|max:500|bail',
+            'location' => 'nullable|max:255|bail',
             'password' => 'required|max:255|bail',
+            'password_confirm' => 'required|same:password'
         ];
     }
 
@@ -44,7 +46,14 @@ class StoreUserRequest extends FormRequest
             'telephone.max' => 'Название не может быть более 15 символов',
             'description.max' => 'Название не может быть более 500 символов',
             'location.max' => 'Название не может быть более 255 символов',
+
             'password.max' => 'Название не может быть более 255 символов',
+            'password_confirm.same' => 'Пароли не совпадают',
+            
+
+            'avatar.mimes' => 'Тип изображения должен быть png,jpg,webp,svg',
+            'avatar.size' => 'Размер изображения не должне привышать больше 2 Мб',
+            'avatar.max' => 'Название изображения больше 2048 символов',
 
             'nickname.unique' => 'Данный никнейм существует',
             'email.unique' => 'Данный Email зарегистрированный',
