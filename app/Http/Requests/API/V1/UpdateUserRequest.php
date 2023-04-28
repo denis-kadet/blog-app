@@ -24,13 +24,14 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstname' => 'present|max:20|bail',
-            'lastname' => 'present|max:30|bail',
-            'email' => 'required|unique:users|max:50|bail',//разобраться spoof and dns
-            'telephone' => 'present|max:15|bail',
-            'description' => 'present|max:500|bail',
-            'location' => 'present|max:255|bail',
-            'password' => 'required|max:255|bail',
+            'firstname' => 'nullable|max:20|bail',
+            'lastname' => 'nullable|max:30|bail',
+            'email' => 'nullable|unique:users|max:50|bail',//разобраться spoof and dns
+            'telephone' => 'nullable|max:15|bail',
+            'description' => 'nullable|max:500|bail',
+            'location' => 'nullable|max:255|bail',
+            'password' => 'nullable|max:255|bail',
+            'password_confirm' => 'required|same:password'
         ];
     }
     

@@ -31,6 +31,8 @@ class User extends Authenticatable
         'description',
         'active',
         'admin',
+        'birtday',
+        'gender'
     ];
 
     /**
@@ -57,6 +59,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birtday' => 'datetime:dd-mm-yyyy'
     ];
 
     public function posts()

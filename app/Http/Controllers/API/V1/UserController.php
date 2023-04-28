@@ -48,6 +48,9 @@ class UserController extends Controller
         $store->firstname = $request->firstname;
         $store->lastname = $request->lastname;
 
+        $store->gender = $request->gender;
+        $store->birtday = $request->birtday;
+
         $path = $request->file('avatar')->store('uploads/avatar', 'public');
         $path_normalize = Util::normalizePath($path);
         $store->avatar = Storage::url($path_normalize);
@@ -102,21 +105,42 @@ class UserController extends Controller
     {
         //TODO доработать проверку как при добавлении пользователя
         $result = User::findorFail($id);
-        $result->firstname = $request->firstname;
-        $result->lastname = $request->lastname;
-        $result->avatar = $request->avatar;
-        $result->email = $request->email;
-        $result->telephone = $request->telephone;
-        $result->description = $request->description;
-        $result->location = $request->location;
-        $result->password = Hash::make($request->password);
-        
+        if($request->password){
+            $result->password = Hash::make($request->password);
+        }
+        if($request->firstname){
+            $result->firstname = $request->firstname;
+        }
+        if($request->lastname){
+            $result->lastname = $request->lastname;
+        }
+        if($request->avatar){//TODO правильно разобраться с заменой фото
+            $result->avatar = $request->avatar;
+        }
+        if($request->email){
+            $result->email = $request->email;
+        }
+        if($request->telephone){
+            $result->telephone = $request->telephone;
+        }
+        if($request->description){
+            $result->description = $request->description;  
+        }
+        if($request->location){
+            $result->location = $request->location;
+        }
+        if($request->gender){
+            $result->gender = $request->gender;
+        }
+        if($request->birtday){
+            $result->birtday = $request->birtday;
+        }
 
         if(!$result->save()){
             return response()->json(['status' => 404, 'update' => 'failed'], 404);
         }
 
-        return response()->json(['status' => 200, 'update' => 'success'], 200);
+        return response()->json(['status' => 200, 'update' => 'success', 'data' => $request], 200);
     }
 
     /**
