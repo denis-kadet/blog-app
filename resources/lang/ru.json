@@ -1,0 +1,8 @@
+{
+    "The :attribute must be at least :length characters.": ":Attribute должен содержать хотя бы одно число.",
+    "The :attribute must contain at least one uppercase and one lowercase letter.": ":Attribute должен содержать как минимум одну верхнюю и одну строчную букву.",
+    "The :attribute must contain at least one letter.": ":Attribute должен содержать хотя бы одну букву.",
+    "The :attribute must contain at least one symbol.": ":Attribute должен содержать хотя бы один символ.",
+    "The :attribute must contain at least one number.": ":Attribute должен содержать хотя бы одно число.",
+    "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "Данное :attribute появился в утечке данных. Пожалуйста, выберите другой :attribute."
+}
