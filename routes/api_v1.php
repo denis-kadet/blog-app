@@ -16,7 +16,10 @@ use App\Http\Controllers\API\V1\UserController;
 */
 
 
-Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::apiResource('users', UserController::class);
+});
 
 Route::fallback(function(){
     return response()->json([

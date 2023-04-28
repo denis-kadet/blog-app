@@ -35,7 +35,7 @@ return [
     |
     */
 
-    'structured' => false,
+    'structured' => true,
     'crud_folders' => true,
 
     /*
@@ -97,7 +97,7 @@ return [
     |
     */
 
-    'enable_formdata' => false,
+    'enable_formdata' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -124,6 +124,16 @@ return [
     'formdata' => [
         'email' => 'max@mail.ru',
         'password' => 'Pnrusvyhodcev(93)',
+        'password_confirm' => 'Pnrusvyhodcev(93)',
+        'firstname' => 'Test',
+        'lastname' => 'Test',
+        'nickname' => 'Test1',
+        'gender' => 'M',
+        'birtday' => '10 апреля 1987',
+        'telephone' => '79998887766',
+        'description' => 'jin kdd ndkdk dn sasdasdns sdsd sad dflks',
+        'location' => 'Moscow',
+
     ],
 
     /*

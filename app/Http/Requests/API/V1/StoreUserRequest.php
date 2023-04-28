@@ -26,9 +26,8 @@ class StoreUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        $user = $request->user();
         return [
             'nickname' => 'required|string|unique:users|max:50|bail',
             'firstname' => 'nullable|string|max:20|bail',
@@ -39,7 +38,7 @@ class StoreUserRequest extends FormRequest
             
             'avatar' => ['nullable', 'file', new FileSizeAvatar,'mimes:png,jpg,webp,svg', 'max:2048','bail'],
             'email' => 'required|string|unique:users|max:50|bail',//TODO разобраться spoof and dns
-            'telephone' => ['nullable',new Phone ,Rule::unique('users', 'telephone')->ignore($user),'string','max:15','bail'],//TODO!!! нужен ли игнор при добавлении номера телефона???
+            'telephone' => ['nullable',new Phone ,Rule::unique('users', 'telephone'),'string','max:15','bail'],//TODO!!! нужен ли игнор при добавлении номера телефона??? ->ignore($user)Request $request        $user = $request->user();
             'description' => 'nullable|string|max:500|bail',
             'location' => 'nullable|string|max:255|bail',
 
