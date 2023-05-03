@@ -35,7 +35,7 @@ return [
     |
     */
 
-    'structured' => true,
+    'structured' => false,
     'crud_folders' => true,
 
     /*
@@ -142,10 +142,10 @@ return [
     |--------------------------------------------------------------------------
     |
     | The routes of the included middleware are included in the export.
-    |
+    |   api, web and e.c.
     */
 
-    'include_middleware' => ['api'],
+    'include_middleware' => ['api', 'web'],
 
     /*
     |--------------------------------------------------------------------------

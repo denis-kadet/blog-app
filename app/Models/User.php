@@ -28,7 +28,6 @@ class User extends Authenticatable
         'avatar',
         'telephone',
         'description',
-        'description',
         'active',
         'admin',
         'birtday',
@@ -50,6 +49,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
+        'deleted_at'
     ];
 
     /**
@@ -59,7 +60,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'birtday' => 'datetime:dd-mm-yyyy'
+        'birtday' => 'datetime'
     ];
 
     public function posts()
