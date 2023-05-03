@@ -1,0 +1,21 @@
+{
+    "l5-swagger.default.api": "api\/documentation",
+    "l5-swagger.default.docs": "docs\/{jsonFile?}",
+    "l5-swagger.default.asset": "docs\/asset\/{asset}",
+    "l5-swagger.default.oauth2_callback": "api\/oauth2-callback",
+    "": "password\/confirm",
+    "users.index": "api_v1\/users",
+    "users.store": "api_v1\/users",
+    "users.show": "api_v1\/users\/{user}",
+    "users.update": "api_v1\/users\/{user}",
+    "users.destroy": "api_v1\/users\/{user}",
+    "login": "login",
+    "logout": "logout",
+    "register": "register",
+    "password.request": "password\/reset",
+    "password.email": "password\/email",
+    "password.reset": "password\/reset\/{token}",
+    "password.update": "password\/reset",
+    "password.confirm": "password\/confirm",
+    "home": "home"
+}

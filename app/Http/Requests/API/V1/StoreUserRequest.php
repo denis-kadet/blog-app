@@ -26,9 +26,8 @@ class StoreUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        $user = $request->user();
         return [
             'nickname' => 'required|string|unique:users|max:50|bail',
             'firstname' => 'nullable|string|max:20|bail',
@@ -39,7 +38,7 @@ class StoreUserRequest extends FormRequest
             
             'avatar' => ['nullable', 'file', new FileSizeAvatar,'mimes:png,jpg,webp,svg', 'max:2048','bail'],
             'email' => 'required|string|unique:users|max:50|bail',//TODO разобраться spoof and dns
-            'telephone' => ['nullable',new Phone ,Rule::unique('users', 'telephone')->ignore($user),'string','max:15','bail'],//TODO!!! нужен ли игнор при добавлении номера телефона???
+            'telephone' => ['nullable',new Phone ,Rule::unique('users', 'telephone'),'string','max:15','bail'],
             'description' => 'nullable|string|max:500|bail',
             'location' => 'nullable|string|max:255|bail',
 
@@ -63,15 +62,18 @@ class StoreUserRequest extends FormRequest
 
             'password.max' => 'Название не может быть более 255 символов',
             'password_confirm.same' => 'Пароли не совпадают',
+            'password_confirm.required' => 'Обязательное поле',
 
             'avatar.mimes' => 'Тип изображения должен быть png,jpg,webp,svg',
             'avatar.max' => 'Название изображения больше 2048 символов',
+            'avatar.file' => ':Attribute должен быть файл',
 
             'nickname.unique' => 'Данный никнейм существует',
             'email.unique' => 'Данный Email зарегистрированный',
             
             'nickname.required' => 'Обязательное поле',
             'email.required' => 'Обязательное поле',
+            'email.max' => 'Email не больше 50 символов',
             'password.required' => 'Обязательное поле',
         ];
     }

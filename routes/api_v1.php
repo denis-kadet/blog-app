@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\V1\UpdateAvatar;
+use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\UserController;
 
 /*
@@ -15,10 +17,20 @@ use App\Http\Controllers\API\V1\UserController;
 |
 */
 
+//регистрация
+Route::post('signup', [AuthController::class, 'sign_up']);
+//авторизация
+Route::post('login', [AuthController::class, 'login']);
 
-Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('users/{user}', [UpdateAvatar::class, '__invoke'])->name('users.updateavatar');
+    Route::apiResource('users', UserController::class);
+});
 
 Route::fallback(function(){
     return response()->json([
-        'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
+        'message' => 'Нет такой страницы. If error persists, contact info@website.com'], 404);
 });
+
+//выйти
+Route::post('logout', [AuthController::class, 'logout']);
