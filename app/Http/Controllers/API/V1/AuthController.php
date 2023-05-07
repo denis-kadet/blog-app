@@ -14,9 +14,9 @@ use App\Http\Requests\API\V1\StoreUserRequest;
 class AuthController extends Controller
 {
     use HasApiTokens;
-    
+
     public function sign_up(StoreUserRequest $request)
-    { 
+    {
         $user = new User($request->all());
         $user->nickname = $request->nickname;
         $user->email = $request->email;
@@ -35,33 +35,39 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'email' => 'required|string|max:50|bail',
-            'password' => ['required','string','max:255','bail'],
+            'password' => ['required', 'string', 'max:255', 'bail'],
         ]);
 
-        $user = User::where('email', $data['email'])->first();
+        //генерирует новую сессию, чтобы предовратить фиксацию сессии
+        if (Auth::attempt($data)) {
+            //TODO! разобраться почему не работает 
+            // $request->session()->regenerate(); 
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response([
-                'status' => 401,
-                'msg' => 'Некорректный пароль',
-                'success' => false
-            ], 401);
+            $user = User::where('email', $data['email'])->first();
+
+            if (!$user || !Hash::check($data['password'], $user->password)) {
+                return response([
+                    'status' => 401,
+                    'msg' => 'Некорректный пароль',
+                    'success' => false
+                ], 401);
+            }
+
+            $token = $user->createToken('apiToken')->plainTextToken;
+
+            $res = [
+                'user' => $user,
+                'token' => $token
+            ];
+            return response()->json(['status' => 201, 'success' => 'true', 'data' => $res], 201);
+        } else {
+            return response()->json(['status' => 403, 'auth' => 'false', 'errors' => 'Неверный email или пароль'], 403);
         }
-
-        $token = $user->createToken('apiToken')->plainTextToken;
-
-        $res = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response()->json(['status' => 201, 'created' => 'success', 'data' => $res], 201);
     }
 
     public function logout(Request $request)
     {
         auth('sanctum')->user()->tokens()->delete();
         return 'logged out';
-    
     }
 }

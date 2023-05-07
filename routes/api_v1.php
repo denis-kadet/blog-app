@@ -22,10 +22,10 @@ Route::post('signup', [AuthController::class, 'sign_up'])->name('signup');
 //авторизация
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
-// Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function(){
     Route::post('users/{user}', [UpdateAvatar::class, '__invoke'])->name('users.updateavatar');
     Route::apiResource('users', UserController::class);
-// });
+});
 
 Route::fallback(function(){
     return response()->json([

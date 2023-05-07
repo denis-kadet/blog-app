@@ -1,7 +1,7 @@
 <template>
-     <ul class="">
-     <li class="dfdfdf" v-for="user in users">{{ user.nickname }}</li> 
-     </ul>  
+    <ul class="">
+        <li class="dfdfdf" v-for="user in users">{{ user.nickname }}</li>
+    </ul>
 </template>
 
 
@@ -10,33 +10,35 @@
 import axios from 'axios';
 import r from '../route';
 
-    export default {
+export default {
+    name: "Users",
+    data() {
+        return {
+            users: []
+        }
+    },
 
-        data (){
-            return {
-                users : []
-            }
-        },
+    computed: {
+        cUsers: function () {
+            return this.users;
+        }
+    },
 
-        computed : {
-            cUsers : function () {
-                return this.users;
-            }
-        },
-
-        methods:{
-            getUsers(){
-                axios.get(r("users.index"))
+    methods: {
+        getUsers() {
+            axios.get(r("users.index"))
                 .then((response) => {
                     this.users = response.data.data
+                    localStorage.getItem('token');
+                }).catch(function (error) {
+                    console.log(error.response);
                 });
-                console.log(this.users);
-            }
-        },
-
-        mounted() {
-            this.getUsers();
-            console.log('Component mounted.')
         }
+    },
+
+    mounted() {
+        this.getUsers();
+        console.log('Component users mounted.')
     }
+}
 </script>
