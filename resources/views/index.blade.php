@@ -11,8 +11,8 @@
 </head>
 
 <body>
-
-    @if (Auth::check())
+{{-- TODO! надо разобраться с проверкой на авторизацию  --}}
+@if (auth('sanctum')->check())
     <script>
         window.Laravel = {!!json_encode([
             'isLoggedin' => true,

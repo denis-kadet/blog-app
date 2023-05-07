@@ -11,5 +11,5 @@
     "users.show": "api_v1\/users\/{user}",
     "users.update": "api_v1\/users\/{user}",
     "users.destroy": "api_v1\/users\/{user}",
-    "home": "home"
+    "logout": "api_v1\/logout"
 }

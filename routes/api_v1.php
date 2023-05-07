@@ -33,4 +33,4 @@ Route::fallback(function(){
 });
 
 //выйти
-Route::post('logout', [AuthController::class, 'logout']);
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');

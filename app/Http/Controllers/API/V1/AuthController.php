@@ -52,7 +52,8 @@ class AuthController extends Controller
                     'success' => false
                 ], 401);
             }
-
+            //TODO! разобраться в строчке ниже
+            // $user->tokens()->where('name', $request->apiToken)->delete();
             $token = $user->createToken('apiToken')->plainTextToken;
 
             $res = [
