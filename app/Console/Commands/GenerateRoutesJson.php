@@ -46,12 +46,17 @@ class GenerateRoutesJson extends Command
   public function handle()
   {
     $routes = [];
-
+    //TODO! доработывать маршураты при работе с vue
     foreach($this->router->getRoutes() as $route){
-      $routes[$route->getName()] = $route->uri();
+      if($route->getName()){
+        $routes[$route->getName()] = $route->uri();
+      } else {
+        echo 'У маршрута ' . $route->uri() . ' нет name' . PHP_EOL;
+      }
+     
     }
 
     File::put($this->json_file_path, json_encode($routes, JSON_PRETTY_PRINT));
-    echo "Routes exported to ".$this->json_file_path;
+    echo "Routes exported to ".$this->json_file_path .PHP_EOL;
   }
 }
