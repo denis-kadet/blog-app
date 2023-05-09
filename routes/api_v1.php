@@ -23,8 +23,11 @@ Route::post('signup', [AuthController::class, 'sign_up'])->name('signup');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/', [UserController::class, 'index']);
     Route::post('users/{user}', [UpdateAvatar::class, '__invoke'])->name('users.updateavatar');
     Route::apiResource('users', UserController::class);
+    //выйти
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::fallback(function(){
@@ -32,5 +35,3 @@ Route::fallback(function(){
         'message' => 'Нет такой страницы. If error persists, contact info@website.com'], 404);
 });
 
-//выйти
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');

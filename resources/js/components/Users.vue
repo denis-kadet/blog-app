@@ -15,7 +15,7 @@ export default {
     data() {
         return {
             users: [],
-            token: localStorage.getItem('token')
+            // token: localStorage.getItem('token')
         }
     },
 
@@ -30,7 +30,6 @@ export default {
             axios.get(r("users.index"))
                 .then((response) => {
                     this.users = response.data.data
-                    localStorage.getItem('token');
                 }).catch((error) => {
                     console.log(error.response);
                 });
@@ -38,8 +37,8 @@ export default {
     },
 
     created() {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
-        axios.defaults.headers.common['Accept'] = 'application/json';
+        // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+        // axios.defaults.headers.common['Accept'] = 'application/json';
         this.getUsers();
         console.log('Component users mounted.')
     }

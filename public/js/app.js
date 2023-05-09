@@ -5346,29 +5346,29 @@ __webpack_require__.r(__webpack_exports__);
   name: "Header",
   data: function data() {
     return {
-      isLogin: ''
+      isLoggedIn: true
     };
   },
   computed: {
     cHeader: function cHeader() {
-      return this.isLogin;
+      return this.isLoggedIn;
     }
   },
   methods: {
     getData: function getData() {
-      console.log(window.Laravel.isLoggedin);
-      if (!window.Laravel.isLoggedin) {
-        this.isLogin = true;
-      } else {
-        this.isLogin = false;
+      if (window.Laravel.isLoggedin) {
+        this.isLoggedIn = false;
       }
     },
     logout: function logout() {
       var _this = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default().post((0,_route__WEBPACK_IMPORTED_MODULE_1__["default"])('logout')).then(function (res) {
+        // localStorage.removeItem('x_xsrf_token');
         _this.$router.push({
           name: 'login'
         });
+      })["catch"](function (error) {
+        console.log(error.response);
       });
     }
   },
@@ -5414,14 +5414,14 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           console.log(response.data);
           if (response.data.success) {
-            localStorage.setItem('token', response.data.data.token);
+            // localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
             _this.$router.push('/');
           } else {
             _this.error = response.data.message;
           }
         })["catch"](function (error) {
-          console.log(error.response.data);
-          var error = error.response.data.errors;
+          console.log(error.response.data.message);
+          var error = error.response.data.message;
           return error;
         });
       });
@@ -5476,10 +5476,11 @@ __webpack_require__.r(__webpack_exports__);
   name: "Users",
   data: function data() {
     return {
-      users: [],
-      token: localStorage.getItem('token')
+      users: []
+      // token: localStorage.getItem('token')
     };
   },
+
   computed: {
     cUsers: function cUsers() {
       return this.users;
@@ -5490,15 +5491,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default().get((0,_route__WEBPACK_IMPORTED_MODULE_1__["default"])("users.index")).then(function (response) {
         _this.users = response.data.data;
-        localStorage.getItem('token');
       })["catch"](function (error) {
         console.log(error.response);
       });
     }
   },
   created: function created() {
-    (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = "Bearer ".concat(this.token);
-    (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Accept) = 'application/json';
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+    // axios.defaults.headers.common['Accept'] = 'application/json';
     this.getUsers();
     console.log('Component users mounted.');
   }
@@ -5544,7 +5544,7 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", {}, [_c("header", {
+  return _c("header", {
     staticClass: "p-3 bg-dark text-white"
   }, [_c("div", {
     staticClass: "container"
@@ -5567,7 +5567,7 @@ var render = function render() {
     attrs: {
       "xlink:href": "#bootstrap"
     }
-  })])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm.isLogin ? _c("div", {
+  })])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm.cHeader ? _c("div", {
     staticClass: "text-end"
   }, [_c("button", {
     staticClass: "btn btn-outline-light me-2",
@@ -5609,7 +5609,7 @@ var render = function render() {
         return _vm.logout.apply(null, arguments);
       }
     }
-  }, [_vm._v("Sign out")])])])])])])])]);
+  }, [_vm._v("Sign out")])])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
