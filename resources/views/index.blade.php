@@ -16,8 +16,7 @@
 @if (Auth::guard('sanctum')->check())
     <script>
         window.Laravel = {!!json_encode([
-            'isLoggedin' => true,
-            'user' => Auth::user()
+            'isLoggedin' => true
         ])!!}
     </script>
 @else

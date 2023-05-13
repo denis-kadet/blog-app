@@ -9,22 +9,22 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+          <li><a href="/" class="nav-link px-2 text-secondary">Главная</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Блог</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Вопросы</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">О себе</a></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
           <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
         </form>
 
-        <div v-if="cHeader" class="text-end">
+        <div v-if="isLoggedIn" class="text-end">
           <button type="button" class="btn btn-outline-light me-2"><router-link
-              :to="{ name: 'login' }">Login</router-link></button>
+              :to="{ name: 'login' }">Вход</router-link></button>
           <button type="button" class="btn btn-warning"><router-link
-              :to="{ name: 'singup' }">Sing-up</router-link></button>
+              :to="{ name: 'singup' }">Регистрация</router-link></button>
         </div>
         <div v-else class="dropdown text-end">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
@@ -32,13 +32,13 @@
             <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="32" height="32">
           </a>
           <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Доска</a></li>
+            <li><a class="dropdown-item" href="#">Настройки</a></li>
+            <li><a class="dropdown-item" href="#">Профиль</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a @click.prevent="logout" class="dropdown-item" href="#">Sign out</a></li>
+            <li><a @click.prevent="logout" class="dropdown-item" href="#">Выход</a></li>
           </ul>
         </div>
 
@@ -60,21 +60,15 @@ export default {
       isLoggedIn: true,
     }
   },
-  computed: {
-    cHeader: function () {
-      return this.isLoggedIn;
-    }
-  },
   methods: {
     getData() {
       if (window.Laravel.isLoggedin) {
-            this.isLoggedIn = false
-        }
+        this.isLoggedIn = false
+      }
     },
     logout() {
       axios.post(r('logout'))
         .then(res => {
-          // localStorage.removeItem('x_xsrf_token');
           this.$router.push({ name: 'login' });
         }).catch((error) => {
           console.log(error.response);

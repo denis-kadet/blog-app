@@ -1,19 +1,20 @@
 import VueRouter from 'vue-router';
-import Users from './components/Users';
-import Login from './components/Login';
-import Singup from './components/Singup';
+// import Users from './components/Users';
+import AuthLogin from './components/AuthLogin';
+import AuthSingup from './components/AuthSingup';
+import Home from './components/Home';
 
-export default new VueRouter({
-    routes : [
+const router = new VueRouter({
+    routes: [
         {
             path: '/',
-            name: 'users',
-            component: Users
+            name: 'home',
+            component: Home
         },
         {
             path: '/login',
-            name: 'login',
-            component: Login
+            name: 'AuthLogin',
+            component: AuthLogin
         },
         {
             path: '/logout',
@@ -21,9 +22,40 @@ export default new VueRouter({
         },
         {
             path: '/singup',
-            name: 'singup',
-            component: Singup
+            name: 'AuthSingup',
+            component: AuthSingup
         },
     ],
     mode: 'history'
 });
+
+// router.beforeEach((to, from, next) => {
+// const isLoggedin = window.Laravel.isLoggedin;
+
+// if (isLoggedin == false) {
+//     console.log(false);
+//     if (to.name === 'login' || to.name === 'registration') {
+//         console.log(1);
+//         return next();
+//     } else {
+//         console.log(2);
+//         return next({
+//             name: 'login'
+//         })
+//     }
+// } else if (isLoggedin == true) {
+//     console.log(true);
+//     if (to.name === 'login' || to.name === 'registration') {
+//         console.log(3);
+//         return next({
+//             name: 'users'
+//         });
+//     } else {
+//         return next();
+//     }
+// }
+
+
+// })
+
+export default router

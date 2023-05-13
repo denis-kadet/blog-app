@@ -15,7 +15,7 @@ export default {
     data() {
         return {
             users: [],
-            // token: localStorage.getItem('token')
+            isLoggedIn: true,
         }
     },
 
@@ -35,7 +35,6 @@ export default {
                 });
         }
     },
-
     created() {
         // axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
         // axios.defaults.headers.common['Accept'] = 'application/json';
