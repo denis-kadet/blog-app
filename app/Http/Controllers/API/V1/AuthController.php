@@ -22,7 +22,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
 
         if (!$user->save()) {
-            return response()->json(['status' => 404, 'created' => 'failed'], 404);
+            return response()->json(['status' => 422, 'created' => 'failed'], 422);
         }
 
         $token = $user->createToken('apiToken')->plainTextToken;

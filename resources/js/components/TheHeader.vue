@@ -22,9 +22,9 @@
 
         <div v-if="isLoggedIn" class="text-end">
           <button type="button" class="btn btn-outline-light me-2"><router-link
-              :to="{ name: 'login' }">Вход</router-link></button>
+              :to="{ name: 'AuthLogin' }">Вход</router-link></button>
           <button type="button" class="btn btn-warning"><router-link
-              :to="{ name: 'singup' }">Регистрация</router-link></button>
+              :to="{ name: 'AuthSingup' }">Регистрация</router-link></button>
         </div>
         <div v-else class="dropdown text-end">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
@@ -54,7 +54,7 @@ import axios from 'axios';
 import r from '../route';
 
 export default {
-  name: "Header",
+  name: "TheHeader",
   data() {
     return {
       isLoggedIn: true,

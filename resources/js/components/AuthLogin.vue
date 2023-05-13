@@ -25,7 +25,7 @@ import axios from 'axios';
 import r from '../route';
 
 export default {
-    name: "login",
+    name: "Authlogin",
     data() {
         return {
             email: '',
