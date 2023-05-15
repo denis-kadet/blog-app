@@ -1,20 +1,16 @@
 import VueRouter from 'vue-router';
-// import Users from './components/Users';
-import AuthLogin from './components/AuthLogin';
-import AuthSingup from './components/AuthSingup';
-import PageHome from './components/PageHome';
 
 const router = new VueRouter({
     routes: [
         {
             path: '/',
             name: 'PageHome',
-            component: PageHome
+            component: () => import('./components/PageHome'),
         },
         {
             path: '/login',
             name: 'AuthLogin',
-            component: AuthLogin
+            component: () => import('./components/AuthLogin'),
         },
         {
             path: '/logout',
@@ -23,7 +19,7 @@ const router = new VueRouter({
         {
             path: '/singup',
             name: 'AuthSingup',
-            component: AuthSingup
+            component: () => import('./components/AuthSingup'),
         },
     ],
     mode: 'history'

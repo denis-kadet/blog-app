@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="text-danger" v-if="error">{{ error }}</div>
+            <div class="text-danger" v-if="error">{{ this.error }}</div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Email address</label>
                 <input v-model="email" type="email" class="form-control" id="exampleFormControlInput1"
@@ -12,7 +12,7 @@
                 <input v-model="password" type="password" class="form-control" id="inputPassword">
             </div>
             <div class="mb-3">
-                <input @click="login" class="btn btn-primary" type="submit" value="login">
+                <input @click.prevent="login" class="btn btn-primary" type="submit" value="login">
             </div>
         </div>
     </div>
@@ -47,10 +47,11 @@ export default {
                         } else {
                             this.error = response.data.message
                         }
-                    }).catch(function (error) {
-                        console.log(error.response.data.message);
-                        var error = error.response.data.message;
-                        return error;
+                    }).catch(error => {
+                        if(error.response.status == 403){
+                            console.log(error.response.data.errors);
+                            this.error = error.response.data.errors;
+                        }
                     });
             });
 
