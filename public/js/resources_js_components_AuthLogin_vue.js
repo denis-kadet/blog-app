@@ -16,6 +16,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _route__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../route */ "./resources/js/route.js");
 
 
+
+//TODO добавить токен для запоминания пользователя
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Authlogin",
   data: function data() {
@@ -72,6 +75,19 @@ var render = function render() {
   return _c("div", {
     staticClass: "container"
   }, [_c("div", {
+    staticClass: "row py-5 justify-content-center align-items-center h-100"
+  }, [_c("div", {
+    staticClass: "col-12 col-lg-9 col-xl-7"
+  }, [_c("div", {
+    staticClass: "card shadow-2-strong card-registration",
+    staticStyle: {
+      "border-radius": "15px"
+    }
+  }, [_c("div", {
+    staticClass: "card-body p-4 p-md-5"
+  }, [_c("h3", {
+    staticClass: "mb-4 pb-2 pb-md-0 mb-md-5"
+  }, [_vm._v("Форма авторизации")]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_vm.error ? _c("div", {
     staticClass: "text-danger"
@@ -82,7 +98,7 @@ var render = function render() {
     attrs: {
       "for": "exampleFormControlInput1"
     }
-  }, [_vm._v("Email address")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Email")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -111,7 +127,7 @@ var render = function render() {
     attrs: {
       "for": "inputPassword"
     }
-  }, [_vm._v("Password")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Пароль")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -138,7 +154,7 @@ var render = function render() {
     staticClass: "btn btn-primary",
     attrs: {
       type: "submit",
-      value: "login"
+      value: "Вход"
     },
     on: {
       click: function click($event) {
@@ -146,7 +162,7 @@ var render = function render() {
         return _vm.login.apply(null, arguments);
       }
     }
-  })])])]);
+  })])])])])])])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;

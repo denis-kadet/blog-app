@@ -30,9 +30,9 @@ class StoreUserRequest extends FormRequest
     {
         // dump($request->telephone);
         return [
-            'nickname' => 'required|string|unique:users|max:50|bail',
-            'firstname' => 'nullable|string|max:20|bail',
-            'lastname' => 'nullable|string|max:30|bail',
+            'nickname' => 'required|regex:/^[a-zA-Z]+$/u|string|unique:users|max:50|bail',
+            'firstname' => 'nullable|regex:/^[a-zA-Zа-яА-Я]+$/u|string|max:20|bail',
+            'lastname' => 'nullable|regex:/^[a-zA-Zа-яА-Я]+$/u|string|max:30|bail',
 
             'gender' => 'nullable|in:F,M,N|bail',
             'birtday' => 'nullable|date|bail',
@@ -54,6 +54,9 @@ class StoreUserRequest extends FormRequest
             'nickname.max' => 'Никнейм не может быть более 50 символов',
             'firstname.max' => 'Название не может быть более 20 символов',
             'lastname.max' => 'Название не может быть более 30 символов',
+            'lastname.regex' => 'Только буквы',
+            'firstname.regex' => 'Только буквы',
+            'nickname.regex' => 'Только латинские буквы',
 
             'birtday.date' => 'Не верный формат даты рождения',
 

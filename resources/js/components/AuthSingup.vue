@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-        <section class="gradient-custom">
-            <div class="container py-5 h-100">
+        <section class="gradient-custom py-5 h-100">         
                 <div class="row justify-content-center align-items-center h-100">
                     <div class="col-12 col-lg-9 col-xl-7">
                         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
@@ -27,9 +26,9 @@
                                                 id="validationServerUsernameFeedback" class="invalid-feedback">
                                                 {{ this.errors.get('nickname')[0] }}
                                             </div>
-                                            <input type="text" v-model="user.nickname" maxlength="50"
-                                                class="form-control form-control-lg" id="validationCustomUsername"
-                                                aria-describedby="inputGroupPrepend" required>
+                                            <input type="text" v-model="user.nickname" v-bind:class="nicknameValid"
+                                                maxlength="50" class="form-control form-control-lg"
+                                                id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
                                             <label for="validationCustomUsername" class="form-label requer">Никнейм</label>
 
                                         </div>
@@ -108,26 +107,25 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="mb-3">
+                                    <div class="mb-3 form-outline">
                                         <div v-if="errors && errors.has('password')" id="validationServerUsernameFeedback"
                                             class="invalid-feedback">
                                             {{ this.errors.get('password')[0] }}
                                         </div>
-                                        <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                                        
                                         <input type="password" v-model="user.password" maxlength="25" class="form-control"
                                             id="exampleInputPassword1">
+                                            <label for="exampleInputPassword1" class="form-label">Пароль</label>
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="mb-3 form-outline">
                                         <div v-if="errors && errors.has('password_confirm')"
                                             id="validationServerUsernameFeedback" class="invalid-feedback">
                                             {{ this.errors.get('password_confirm')[0] }}
                                         </div>
-                                        <div v-else class="valid-feedback">
-                                            все заебись
-                                        </div>
-                                        <label for="exampleInputPassword2" class="form-label">Повторите пароль</label>
+                                        
                                         <input type="password" v-model="user.password_confirm" maxlength="25"
                                             class="form-control" id="exampleInputPassword2">
+                                            <label for="exampleInputPassword2" class="form-label">Повторите пароль</label>
                                     </div>
                                 </div>
                                 <!-- TODO! https://jsfiddle.net/0gd00Lrd/ добавить :disable -->
@@ -139,7 +137,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
         </section>
     </div>
 </template>
@@ -169,18 +167,21 @@ export default {
         }
     },
     computed: {
-        //TODO написать проверку на 50/25/30 символов, чтобы загоралось красным
-        // реализовать всплывашки уточнающие данные
+        //TODO реализовать всплывашки уточнающие данные
         emailValid: function () {
-            var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-            var val = this.user.email;
+            var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+                val = this.user.email;
 
-            if (val.length > 0 && val.match(pattern)) {
-                return { 'is-valid': true };
-            } else if (val.length > 0 || (this.errors && this.errors.has('email')) && !val.match(pattern)) {
-                return {
-                    'is-invalid': true
-                };
+            if (val.length > 0) {
+                if (!val.match(pattern)) {
+                    return { 'is-invalid': true };
+                } else if (val.match(pattern) && (this.errors && this.errors.has('email'))) {
+                    //TODO! по сделал так, но надо как-то создать массив и туда добавить значение, если почта уже зарегистирирована 
+                    this.errors.delete('email')
+                    return { 'is-invalid': true };
+                } else {
+                    return { 'is-valid': true };
+                }
             }
         },
         telValid: function () {
@@ -201,8 +202,20 @@ export default {
                     'is-invalid': true
                 };
             }
-        }
+        },
+        nicknameValid: function () {
+            //@TODO! паттерн для проверки на латинские буквы
+            var val = this.user.nickname;
+
+            if (val.length > 0 && this.errors && this.errors.has('nickname')) {
+                this.errors.delete('nickname')
+                return { 'is-invalid': true };
+            } else if(val.length > 0){
+                return { 'is-valid': true };
+            }
+        },
     },
+
     // watch: {
     //     'user.email':function(val){
     //         var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -217,7 +230,7 @@ export default {
     //     } 
     // },
     methods: {
-        async getDataSubmit() {
+        getDataSubmit() {
             axios.get('/sanctum/csrf-cookie').then(res => {
                 axios.post(r("signup"),
                     {
@@ -266,10 +279,10 @@ export default {
         },
         telNumber() {
             var x = this.user.telephone.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/),
-            y = !x[3] ? x[1] + x[2] : x[1] + x[2] + x[3] + (x[4]) + (x[5]);
+                y = !x[3] ? x[1] + x[2] : x[1] + x[2] + x[3] + (x[4]) + (x[5]);
 
             return y;
-        }
+        },
     },
     mounted() {
         console.log('Component AuthSingup mounted.')
@@ -280,5 +293,12 @@ export default {
 <style scoped>
 .invalid-feedback {
     display: block !important;
+}
+.form-outline{
+    position: relative;
+}
+.invalid-feedback{
+    position: absolute;
+    top: -30px;
 }
 </style>
