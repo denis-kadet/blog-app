@@ -17,6 +17,9 @@
 <script>
 export default {
     name: "BaseCard",
+    mounted() {
+        // console.log(window.Laravel);
+    }
 };
 </script>
     

@@ -38,6 +38,7 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (response) {
           console.log(response.data);
           if (response.data.success) {
+            localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
             _this.$router.push('/');
           } else {
             _this.error = response.data.message;

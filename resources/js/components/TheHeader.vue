@@ -9,20 +9,24 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 text-secondary">Главная</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Блог</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Вопросы</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">О себе</a></li>
+          <li>
+            <router-link class="nav-link px-2" :to="{ name: 'PageHome' }">Главная</router-link>
+          </li>
+          <li><a href="#" class="nav-link px-2">Блог</a></li>
+          <li><a href="#" class="nav-link px-2">Контакты</a></li>
+          <li><a href="#" class="nav-link px-2">Вопросы</a></li>
+          <li>
+              <router-link class="nav-link px-2" :to="{ name: 'PageUsers' }">О себе</router-link>
+          </li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
           <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
         </form>
 
-        <div v-if="isLoggedIn" class="text-end">
-          <button type="button" class="btn btn-outline-light me-2"><router-link
-              :to="{ name: 'AuthLogin' }">Вход</router-link></button>
+        <div v-if="!token" class="text-end">
+          <button type="button" class="btn btn-outline-light me-2">
+            <router-link :to="{ name: 'AuthLogin' }">Вход</router-link></button>
           <button type="button" class="btn btn-warning"><router-link
               :to="{ name: 'AuthSingup' }">Регистрация</router-link></button>
         </div>
@@ -47,8 +51,6 @@
   </header>
 </template>
 
-
-
 <script>
 import axios from 'axios';
 import r from '../route';
@@ -57,27 +59,45 @@ export default {
   name: "TheHeader",
   data() {
     return {
-      isLoggedIn: true,
+      token: null,
     }
   },
   methods: {
-    getData() {
-      if (window.Laravel.isLoggedin) {
-        this.isLoggedIn = false
-      }
+    getToken() {
+      this.token = localStorage.getItem('x_xsrf_token');
     },
+
     logout() {
       axios.post(r('logout'))
         .then(res => {
-          this.$router.push({ name: 'login' });
+          localStorage.removeItem('x_xsrf_token');
+          this.$router.push({ name: 'AuthLogin' });
         }).catch((error) => {
           console.log(error.response);
         });
     }
   },
   mounted() {
-    this.getData(),
-      console.log('Component Header mounted.');
+    this.getToken(),
+    console.log('Component Header mounted.');
+  },
+  updated() {
+    this.getToken();
+    console.log('Component Header updated.');
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.nav{
+  & a {
+  text-decoration: none !important;
+  color: #fff;
+}
+}
+
+.router-link-exact-active{
+  color: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity)) !important;
+  --bs-text-opacity: 1;
+}
+</style>

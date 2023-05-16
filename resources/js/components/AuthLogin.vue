@@ -54,6 +54,7 @@ export default {
                     }).then((response) => {
                         console.log(response.data)
                         if (response.data.success) {
+                            localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
                             this.$router.push('/')
                         } else {
                             this.error = response.data.message

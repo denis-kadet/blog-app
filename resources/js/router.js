@@ -21,37 +21,34 @@ const router = new VueRouter({
             name: 'AuthSingup',
             component: () => import('./components/AuthSingup'),
         },
+        {
+            path: '/users',
+            name: 'PageUsers',
+            component: () => import('./components/Users'),
+        },
     ],
     mode: 'history'
 });
 
-// router.beforeEach((to, from, next) => {
-// const isLoggedin = window.Laravel.isLoggedin;
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('x_xsrf_token');
+    if (!token) {
+        if (to.name === 'AuthLogin' || to.name === 'AuthSingup') {
+            return next();
+        } else {
+            return next({
+                name: 'AuthLogin'
+            })
+        }
+    }
+    
+    if (token && to.name === 'AuthLogin' || to.name === 'AuthSingup') {
+            return next({
+                name: 'PageHome'
+            })
+    }
 
-// if (isLoggedin == false) {
-//     console.log(false);
-//     if (to.name === 'login' || to.name === 'registration') {
-//         console.log(1);
-//         return next();
-//     } else {
-//         console.log(2);
-//         return next({
-//             name: 'login'
-//         })
-//     }
-// } else if (isLoggedin == true) {
-//     console.log(true);
-//     if (to.name === 'login' || to.name === 'registration') {
-//         console.log(3);
-//         return next({
-//             name: 'users'
-//         });
-//     } else {
-//         return next();
-//     }
-// }
-
-
-// })
+    next();
+})
 
 export default router
