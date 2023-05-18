@@ -7,7 +7,6 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use League\Flysystem\Util;
-use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -39,6 +38,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * TODO зачем мне store, если можно обойтись авторизацией и update??????
      */
     public function store(StoreUserRequest $request)
     {
@@ -62,11 +62,8 @@ class UserController extends Controller
         $store->location = $request->location;
 
         $store->password = Hash::make($request->password);
-        //TODO! он должен быть уникальный, не совпадать
-        $store->remember_token = Str::random(10);
 
         if(!$store->save()){
-            //TODO! "message": "the given data was invalid.", Надо переименовать
             return response()->json(['status' => 404, 'created' => 'failed'], 404);
         }
        
@@ -105,6 +102,9 @@ class UserController extends Controller
     {
         //TODO доработать проверку как при добавлении пользователя
         $result = User::findorFail($id);
+
+dd($request->hasFile('avatar'));
+
         if($request->password){
             $result->password = Hash::make($request->password);
         }
@@ -114,9 +114,12 @@ class UserController extends Controller
         if($request->lastname){
             $result->lastname = $request->lastname;
         }
-        if($request->avatar){//TODO правильно разобраться с заменой фото
-            $result->avatar = $request->avatar;
-        }
+        //TODO из-за метода put пришлось перенести в отдельный контроллер замену аватарки
+        // if($request->hasFile('avatar')){
+        //     $path = $request->file('avatar')->store('uploads/avatar', 'public');
+        //     $path_normalize = Util::normalizePath($path);
+        //     $result->avatar = Storage::url($path_normalize);
+        // }
         if($request->email){
             $result->email = $request->email;
         }
@@ -140,7 +143,7 @@ class UserController extends Controller
             return response()->json(['status' => 404, 'update' => 'failed'], 404);
         }
 
-        return response()->json(['status' => 200, 'update' => 'success', 'data' => $request], 200);
+        return response()->json(['status' => 200, 'update' => 'success', 'data' => $result], 200);
     }
 
     /**
