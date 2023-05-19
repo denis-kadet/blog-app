@@ -12,21 +12,6 @@
 </head>
 
 <body>
-{{-- TODO! надо разобраться с проверкой на авторизацию  --}}
-@if (Auth::guard('sanctum')->check())
-    <script>
-        window.Laravel = {!!json_encode([
-            'isLoggedin' => true
-        ])!!}
-    </script>
-@else
-    <script>
-        window.Laravel = {!!json_encode([
-            'isLoggedin' => false
-        ])!!}
-    </script>
-@endif
-
     <div id="app"></div>
     <script src="{{ mix('/js/app.js') }}"></script>
 </body>
