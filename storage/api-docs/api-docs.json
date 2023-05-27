@@ -1,0 +1,223 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Blog API",
+        "contact": {
+            "email": "denis-kadet@mail.ru"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "/api_v1/",
+            "description": "Laravel Swagger API server"
+        }
+    ],
+    "paths": {
+        "localhost:8000/api_v1": {},
+        "/signup": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация",
+                "operationId": "singup",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "nickname": {
+                                                "description": "unique:users|required",
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "pattern": "/^[a-zA-Z][a-zA-Z0-9]{5,50}$/u",
+                                                "example": "Maxnesh"
+                                            },
+                                            "firstname": {
+                                                "description": "nullable",
+                                                "type": "string",
+                                                "maxLength": 20,
+                                                "pattern": "/^[a-zA-Zа-яА-Я]+$/u",
+                                                "example": "Max"
+                                            },
+                                            "lastname": {
+                                                "description": "nullable",
+                                                "type": "string",
+                                                "maxLength": 30,
+                                                "pattern": "/^[a-zA-Zа-яА-Я]+$/u",
+                                                "example": "Nesh"
+                                            },
+                                            "gender": {
+                                                "description": "M(Male), F(Female), N(None)",
+                                                "type": "string",
+                                                "example": "N"
+                                            },
+                                            "birtday": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "10.05.2001"
+                                            },
+                                            "email": {
+                                                "description": "unique:users|required",
+                                                "type": "email",
+                                                "format": "email",
+                                                "maxLength": 50,
+                                                "example": "example@email.com"
+                                            },
+                                            "telephone": {
+                                                "description": "unique:users, telephone",
+                                                "type": "string",
+                                                "maxLength": 15,
+                                                "pattern": "/^[0-9]{10,11}$/",
+                                                "example": "79998887766"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "maxLength": 500,
+                                                "example": "Some description"
+                                            },
+                                            "location": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Moscow"
+                                            },
+                                            "password": {
+                                                "description": "required|mixedCase|mixedCase|symbols",
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "minLength": 8,
+                                                "example": "Vlad210(SD)"
+                                            },
+                                            "password_confirm": {
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "example": "Vlad210(SD)"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "created": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nickname": {
+                                                    "type": "string",
+                                                    "maxLength": 50,
+                                                    "example": "Maxnesh"
+                                                },
+                                                "firstname": {
+                                                    "type": "string",
+                                                    "maxLength": 20,
+                                                    "example": "Max"
+                                                },
+                                                "lastname": {
+                                                    "type": "string",
+                                                    "maxLength": 30,
+                                                    "example": "Nesh"
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "N"
+                                                },
+                                                "birtday": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2001-02-01T00:00:00.000000Z"
+                                                },
+                                                "email": {
+                                                    "type": "email",
+                                                    "format": "email",
+                                                    "maxLength": 50,
+                                                    "example": "example@email.com"
+                                                },
+                                                "telephone": {
+                                                    "type": "string",
+                                                    "maxLength": 15,
+                                                    "example": "79998887766"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "maxLength": 500,
+                                                    "example": "Some description"
+                                                },
+                                                "location": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Moscow"
+                                                },
+                                                "password": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Vlad210(SD)"
+                                                },
+                                                "password_confirm": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Vlad210(SD)"
+                                                },
+                                                "created_at": {
+                                                    "type": "date-time",
+                                                    "example": "2023-05-27T16:59:30.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "190|HxcJNdv9aMY7HCyLLAHIBDhcJBajuwLpY9fl4mZ5"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "X-XSRF-TOKEN": {
+                "type": "apiKey",
+                "name": "X-XSRF-TOKEN",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Регистрация, авторизация и выход"
+        }
+    ]
+}

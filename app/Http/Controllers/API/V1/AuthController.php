@@ -38,9 +38,10 @@ class AuthController extends Controller
         ]);
 
         //генерирует новую сессию, чтобы предовратить фиксацию сессии
+        //TODO! рефакторинг данного кода
         if (Auth::attempt($data)) {
 
-            $request->session()->regenerate(); 
+            $request->session()->regenerate();
 
             $user = User::where('email', $data['email'])->first();
 
@@ -58,15 +59,14 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        try{
+        try {
             auth()->user()->tokens()->delete();
 
-            $request->session()->invalidate(); 
+            $request->session()->invalidate();
 
             return response()->json(['status' => 205, 'auth' => 'false', 'message' => 'Токен отозван'], 205);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e], 404);
         }
-
     }
 }

@@ -120,7 +120,7 @@ dd($request->hasFile('avatar'));
         //     $path_normalize = Util::normalizePath($path);
         //     $result->avatar = Storage::url($path_normalize);
         // }
-        if($request->email){
+        if($request->email){ 
             $result->email = $request->email;
         }
         if($request->telephone){
