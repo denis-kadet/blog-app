@@ -89,7 +89,7 @@
                                                 "example": "Moscow"
                                             },
                                             "password": {
-                                                "description": "required|mixedCase|mixedCase|symbols",
+                                                "description": "required|mixedCase|symbols",
                                                 "type": "string",
                                                 "maxLength": 255,
                                                 "minLength": 8,
