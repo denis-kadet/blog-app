@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
  *      operationId="singup",
  *      tags={"Auth"},
  *      summary="Регистрация",
+ *      security={{ "bearerAuth": {} }},
  *      @OA\RequestBody(
  *          @OA\JsonContent(
  *              allOf={
@@ -54,6 +55,37 @@ use App\Http\Controllers\Controller;
  *                 @OA\Property(property="password", type="string", maxLength=255, example="Vlad210(SD)"),
  *                 @OA\Property(property="password_confirm", type="string", maxLength=255, example="Vlad210(SD)"),
  *                 @OA\Property(property="created_at", type="date-time", example="2023-05-27T16:59:30.000000Z"),     
+ *             ),
+ *             @OA\Property(property="token", type="string", example="190|HxcJNdv9aMY7HCyLLAHIBDhcJBajuwLpY9fl4mZ5"),
+ *         ),
+ *     )
+ * )
+ *
+ * @OA\Post(
+ *      path = "/login",
+ *      operationId="login",
+ *      tags={"Auth"},
+ *      summary="Авторизация",
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(
+ *              allOf={
+ *                  @OA\Schema(
+ *                      @OA\Property(property="email", type="email", format="email", maxLength=50, example="example@email.com", description="unique:users|required"),
+ *                      @OA\Property(property="password", type="string", minLength=8, maxLength=255, example="Vlad210(SD)", description="required|mixedCase|symbols"),
+ *                  ),
+ *              }
+ *          ),
+ *      ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Ok",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="integer", example=201),
+ *             @OA\Property(property="success", type="string", example="success"),
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="user_id", type="integer", example=1), 
+ *                 @OA\Property(property="nickname", type="string", maxLength=50, example="Maxnesh"),
+ *                 @OA\Property(property="email", type="email", format="email", maxLength=50, example="example@email.com"),   
  *             ),
  *             @OA\Property(property="token", type="string", example="190|HxcJNdv9aMY7HCyLLAHIBDhcJBajuwLpY9fl4mZ5"),
  *         ),

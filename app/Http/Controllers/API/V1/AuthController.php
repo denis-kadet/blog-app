@@ -8,6 +8,8 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\LoginResource;
+use App\Http\Requests\API\V1\LoginUserRequest;
 use App\Http\Requests\API\V1\StoreUserRequest;
 
 class AuthController extends Controller
@@ -30,31 +32,28 @@ class AuthController extends Controller
         return response()->json(['status' => 201, 'created' => 'success', 'data' => $user, 'token' =>  $token], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
-        $data = $request->validate([
-            'email' => 'required|string|max:50|bail',
-            'password' => ['required', 'string', 'max:255', 'bail'],
-        ]);
+        $data = $request->validated();
 
-        //генерирует новую сессию, чтобы предовратить фиксацию сессии
-        //TODO! рефакторинг данного кода
-        if (Auth::attempt($data)) {
-
-            $request->session()->regenerate();
-
-            $user = User::where('email', $data['email'])->first();
-
-            $token = $user->createToken('apiToken')->plainTextToken;
-
-            $res = [
-                'user' => $user,
-                'token' => $token
-            ];
-            return response()->json(['status' => 201, 'success' => 'true', 'data' => $res], 201);
-        } else {
-            return response()->json(['status' => 403, 'auth' => 'false', 'errors' => 'Неверный email или пароль'], 403);
+        
+        if (!Auth::attempt($data)) {
+            return response()->json(['status' => 403, 'success' => 'false', 'errors' => 'Неверный email или пароль'], 403);
         }
+        //генерирует новую сессию, чтобы предовратить фиксацию сессии
+        $request->session()->regenerate();
+
+        $user_arr = User::where('email', $data['email'])->first();
+
+        $user = new LoginResource(User::findOrFail($user_arr->id));
+
+        $token = $user->createToken('apiToken')->plainTextToken;
+
+        $res = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return response()->json(['status' => 201, 'success' => 'true', 'data' => $res], 201);
     }
 
     public function logout(Request $request)

@@ -201,16 +201,104 @@
                             }
                         }
                     }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "email": {
+                                                "description": "unique:users|required",
+                                                "type": "email",
+                                                "format": "email",
+                                                "maxLength": 50,
+                                                "example": "example@email.com"
+                                            },
+                                            "password": {
+                                                "description": "required|mixedCase|symbols",
+                                                "type": "string",
+                                                "maxLength": 255,
+                                                "minLength": 8,
+                                                "example": "Vlad210(SD)"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "success": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nickname": {
+                                                    "type": "string",
+                                                    "maxLength": 50,
+                                                    "example": "Maxnesh"
+                                                },
+                                                "email": {
+                                                    "type": "email",
+                                                    "format": "email",
+                                                    "maxLength": 50,
+                                                    "example": "example@email.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "190|HxcJNdv9aMY7HCyLLAHIBDhcJBajuwLpY9fl4mZ5"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     },
     "components": {
         "securitySchemes": {
-            "X-XSRF-TOKEN": {
-                "type": "apiKey",
-                "name": "X-XSRF-TOKEN",
-                "in": "header"
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     },

@@ -20,12 +20,14 @@ use App\Http\Controllers\Controller;
  *      description="Laravel Swagger API server",
  *      url="/api_v1/"
  * )
- * @OA\SecurityScheme(
- *      type="apiKey",
- *      in="header",
- *      name="X-XSRF-TOKEN",
- *      securityScheme="X-XSRF-TOKEN"
+ * @OA\Compontents(
+ *     @OA\SecurityScheme(
+ *         type="http",
+ *         securityScheme="bearerAuth",
+ *         scheme="bearer"
+ *     )
  * )
+ * 
  */
 class MainController extends Controller
 {
