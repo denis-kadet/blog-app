@@ -6,13 +6,14 @@ use Cache;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
-use League\Flysystem\Util;
+
+use App\Services\userService;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
-use Illuminate\Support\Facades\Storage;
+
 use App\Http\Requests\API\V1\StoreUserRequest;
 use App\Http\Requests\API\V1\UpdateUserRequest;
 
@@ -40,34 +41,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      * TODO зачем мне store, если можно обойтись авторизацией и update??????
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request, UserService $userService)
     {
-        $store = new User($request->all());
-
-        $store->nickname = $request->nickname;
-        $store->firstname = $request->firstname;
-        $store->lastname = $request->lastname;
-
-        $store->gender = $request->gender;
-        $store->birtday = $request->birtday;
-
-        $path = $request->file('avatar')->store('uploads/avatar', 'public');
-        $path_normalize = Util::normalizePath($path);
-        $store->avatar = Storage::url($path_normalize);
-        
-        $store->email = $request->email;
-        $store->telephone = $request->telephone;
-
-        $store->description = $request->description;
-        $store->location = $request->location;
-
-        $store->password = Hash::make($request->password);
-
-        if(!$store->save()){
-            return response()->json(['status' => 404, 'created' => 'failed'], 404);
+        try{
+            $user = $userService->storeUser($request);
+            return response()->json(['status' => 201, 'created' => 'success', 'data' => $user], 201);
+        } catch(Exception $e){
+            return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }
-       
-        return response()->json(['status' => 201, 'created' => 'success', 'data' => $store], 201);
+
        
     }
 

@@ -31,6 +31,7 @@ class User extends Authenticatable
         'active',
         'admin',
         'birtday',
+        'password',
         'gender'
     ];
 
