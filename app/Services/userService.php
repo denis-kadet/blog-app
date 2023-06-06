@@ -28,7 +28,7 @@ class userService
     {
 
         $store = User::create([
-            'nickname' => $userData->email,
+            'nickname' => $userData->nickname,
             'firstname' => $userData->firstname,
             'lastname' => $userData->lastname,
 
