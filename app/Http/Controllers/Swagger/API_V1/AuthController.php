@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
  *      operationId="singup",
  *      tags={"Auth"},
  *      summary="Регистрация",
- *      security={{ "bearerAuth": {} }},
  *      @OA\RequestBody(
  *          @OA\JsonContent(
  *              allOf={
@@ -88,6 +87,23 @@ use App\Http\Controllers\Controller;
  *                 @OA\Property(property="email", type="email", format="email", maxLength=50, example="example@email.com"),   
  *             ),
  *             @OA\Property(property="token", type="string", example="190|HxcJNdv9aMY7HCyLLAHIBDhcJBajuwLpY9fl4mZ5"),
+ *         ),
+ *     )
+ * )
+ * 
+ * @OA\Post(
+ *      path = "/logout",
+ *      operationId="logout",
+ *      tags={"Auth"},
+ *      summary="Выход",
+ *      security={{ "bearerAuth": {} }},
+ *     @OA\Response(
+ *         response=205,
+ *         description="Ok",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="integer", example=205),
+ *             @OA\Property(property="success", type="string", example="true"),
+ *             @OA\Property(property="message", type="string", example="Токен отозван"),
  *         ),
  *     )
  * )

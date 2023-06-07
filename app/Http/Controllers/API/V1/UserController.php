@@ -6,14 +6,11 @@ use Cache;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
-
 use App\Services\userService;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserCollection;
-
 use App\Http\Requests\API\V1\StoreUserRequest;
 use App\Http\Requests\API\V1\UpdateUserRequest;
 
@@ -26,9 +23,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        try{
+        try {
             $result = new UserCollection(User::all());
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e], 404);
         }
         return response()->json(['status' => 200, 'data' => $result], 200);
@@ -43,14 +40,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request, UserService $userService)
     {
-        try{
+        try {
             $user = $userService->storeUser($request);
             return response()->json(['status' => 201, 'created' => 'success', 'data' => $user], 201);
-        } catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }
-
-       
     }
 
     /**
@@ -61,13 +56,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        try{
+        //TODO разобраться с кешем, то есть при добавлении нового пользователя он должен обновлятся 
+        try {
             $key = 'user_' . $id;
 
-            $user = Cache::tags(['user'])->remember($key, Carbon::now()->addMinutes(10), function() use($id){
-               return new UserResource(User::findOrFail($id));
-            }); 
-        }catch(Exception $e){
+            $user = Cache::tags(['user'])->remember($key, Carbon::now()->addMinutes(10), function () use ($id) {
+                return new UserResource(User::findOrFail($id));
+            });
+        } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }
         return response()->json(['status' => 200, 'data' => $user], 200);
@@ -80,52 +76,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, $id, UserService $userService)
     {
-        //TODO доработать проверку как при добавлении пользователя
-        $result = User::findorFail($id);
-
-dd($request->hasFile('avatar'));
-
-        if($request->password){
-            $result->password = Hash::make($request->password);
+        try {
+            $result = $userService->UpdateUser($request->all(), $id);
+            return response()->json(['status' => 200, 'update' => 'success', 'data' => $result], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }
-        if($request->firstname){
-            $result->firstname = $request->firstname;
-        }
-        if($request->lastname){
-            $result->lastname = $request->lastname;
-        }
-        //TODO из-за метода put пришлось перенести в отдельный контроллер замену аватарки
-        // if($request->hasFile('avatar')){
-        //     $path = $request->file('avatar')->store('uploads/avatar', 'public');
-        //     $path_normalize = Util::normalizePath($path);
-        //     $result->avatar = Storage::url($path_normalize);
-        // }
-        if($request->email){ 
-            $result->email = $request->email;
-        }
-        if($request->telephone){
-            $result->telephone = $request->telephone;
-        }
-        if($request->description){
-            $result->description = $request->description;  
-        }
-        if($request->location){
-            $result->location = $request->location;
-        }
-        if($request->gender){
-            $result->gender = $request->gender;
-        }
-        if($request->birtday){
-            $result->birtday = $request->birtday;
-        }
-
-        if(!$result->save()){
-            return response()->json(['status' => 404, 'update' => 'failed'], 404);
-        }
-
-        return response()->json(['status' => 200, 'update' => 'success', 'data' => $result], 200);
     }
 
     /**

@@ -57,7 +57,7 @@ class AuthController extends Controller
 
             $request->session()->invalidate();
 
-            return response()->json(['status' => 205, 'auth' => 'false', 'message' => 'Токен отозван'], 205);
+            return response()->json(['status' => 205, 'success' => 'true', 'message' => 'Токен отозван'], 205);
         } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e], 404);
         }
