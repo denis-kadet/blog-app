@@ -31,6 +31,7 @@ class User extends Authenticatable
         'active',
         'admin',
         'birtday',
+        'password',
         'gender'
     ];
 
@@ -50,7 +51,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'email_verified_at',
-        'deleted_at'
+        'deleted_at',
+        'updated_at'
     ];
 
     /**

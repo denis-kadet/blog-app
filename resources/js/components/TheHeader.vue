@@ -66,7 +66,6 @@ export default {
     getToken() {
       this.token = localStorage.getItem('x_xsrf_token');
     },
-
     logout() {
       axios.post(r('logout'))
         .then(res => {
@@ -79,6 +78,7 @@ export default {
   },
   mounted() {
     this.getToken(),
+    console.log(this.token),
     console.log('Component Header mounted.');
   },
   updated() {

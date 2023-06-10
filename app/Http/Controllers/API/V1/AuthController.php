@@ -5,68 +5,61 @@ namespace App\Http\Controllers\API\V1;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
+use App\Services\userService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\LoginResource;
+use App\Http\Requests\API\V1\LoginUserRequest;
 use App\Http\Requests\API\V1\StoreUserRequest;
 
 class AuthController extends Controller
 {
     use HasApiTokens;
-
-    public function sign_up(StoreUserRequest $request)
+    //TODO переименовать на signUpAuth
+    public function sign_up(StoreUserRequest $request, UserService $userService)
     {
-        $user = new User($request->all());
-        $user->nickname = $request->nickname;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        try {
+            $user = $userService->storeUser($request);
+            $token = $user->createToken('apiToken')->plainTextToken;
 
-        if (!$user->save()) {
-            return response()->json(['status' => 422, 'created' => 'failed'], 422);
+            return response()->json(['status' => 201, 'created' => 'success', 'data' => $user, 'token' =>  $token], 201);
+        } catch (Exception $e) {
+            return response()->json(['status' => 422, 'errors' => $e->getMessage()], 422);
         }
+    }
+    //TODO переименовать на loginAuth
+    public function login(LoginUserRequest $request)
+    {
+        $data = $request->validated();
+
+        if (!Auth::attempt($data)) {
+            return response()->json(['status' => 403, 'success' => 'false', 'errors' => 'Неверный email или пароль'], 403);
+        }
+        //генерирует новую сессию, чтобы предовратить фиксацию сессии
+        $request->session()->regenerate();
+
+        $user_arr = User::where('email', $data['email'])->first();
+        $user = new LoginResource(User::findOrFail($user_arr->id));
 
         $token = $user->createToken('apiToken')->plainTextToken;
 
-        return response()->json(['status' => 201, 'created' => 'success', 'data' => $user, 'token' =>  $token], 201);
+        $res = [
+            'user' => $user,
+            'token' => $token
+        ];
+        return response()->json(['status' => 201, 'success' => 'true', 'data' => $res], 201);
     }
-
-    public function login(Request $request)
-    {
-        $data = $request->validate([
-            'email' => 'required|string|max:50|bail',
-            'password' => ['required', 'string', 'max:255', 'bail'],
-        ]);
-
-        //генерирует новую сессию, чтобы предовратить фиксацию сессии
-        if (Auth::attempt($data)) {
-
-            $request->session()->regenerate(); 
-
-            $user = User::where('email', $data['email'])->first();
-
-            $token = $user->createToken('apiToken')->plainTextToken;
-
-            $res = [
-                'user' => $user,
-                'token' => $token
-            ];
-            return response()->json(['status' => 201, 'success' => 'true', 'data' => $res], 201);
-        } else {
-            return response()->json(['status' => 403, 'auth' => 'false', 'errors' => 'Неверный email или пароль'], 403);
-        }
-    }
-
+    //TODO переименовать на logoutAuth
     public function logout(Request $request)
     {
-        try{
+        try {
             auth()->user()->tokens()->delete();
 
-            $request->session()->invalidate(); 
+            $request->session()->invalidate();
 
-            return response()->json(['status' => 205, 'auth' => 'false', 'message' => 'Токен отозван'], 205);
-        }catch(Exception $e){
+            return response()->json(['status' => 205, 'success' => 'true', 'message' => 'Токен отозван'], 205);
+        } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e], 404);
         }
-
     }
 }

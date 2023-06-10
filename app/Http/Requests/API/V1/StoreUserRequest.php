@@ -30,7 +30,7 @@ class StoreUserRequest extends FormRequest
     {
         // dump($request->telephone);
         return [
-            'nickname' => 'required|regex:/^[a-zA-Z]+$/u|string|unique:users|max:50|bail',
+            'nickname' => 'required|regex:/^[a-zA-Z][a-zA-Z0-9]{5,50}$/u|string|unique:users|max:50|bail',
             'firstname' => 'nullable|regex:/^[a-zA-Zа-яА-Я]+$/u|string|max:20|bail',
             'lastname' => 'nullable|regex:/^[a-zA-Zа-яА-Я]+$/u|string|max:30|bail',
 
@@ -43,7 +43,7 @@ class StoreUserRequest extends FormRequest
             'description' => 'nullable|string|max:500|bail',
             'location' => 'nullable|string|max:255|bail',
 
-            'password' => ['required','string','max:255',Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(),'bail'],
+            'password' => ['required','string','max:255',Password::min(8)->mixedCase()->mixedCase()->symbols()->uncompromised(),'bail'],
             'password_confirm' => 'required|string|same:password'
         ];
     }

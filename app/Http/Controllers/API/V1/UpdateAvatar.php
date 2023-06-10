@@ -4,11 +4,9 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\User;
 use League\Flysystem\Util;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\API\V1\UpdateUserRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File; 
 
 class UpdateAvatar extends Controller
