@@ -15,7 +15,7 @@ use App\Http\Requests\API\V1\StoreUserRequest;
 class AuthController extends Controller
 {
     use HasApiTokens;
-    //@TODO переименовать на signUpAuth
+    //TODO переименовать на signUpAuth
     public function sign_up(StoreUserRequest $request, UserService $userService)
     {
         try {
@@ -27,7 +27,7 @@ class AuthController extends Controller
             return response()->json(['status' => 422, 'errors' => $e->getMessage()], 422);
         }
     }
-    //@TODO переименовать на loginAuth
+    //TODO переименовать на loginAuth
     public function login(LoginUserRequest $request)
     {
         $data = $request->validated();
@@ -49,7 +49,7 @@ class AuthController extends Controller
         ];
         return response()->json(['status' => 201, 'success' => 'true', 'data' => $res], 201);
     }
-    //@TODO переименовать на logoutAuth
+    //TODO переименовать на logoutAuth
     public function logout(Request $request)
     {
         try {

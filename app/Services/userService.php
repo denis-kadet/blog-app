@@ -49,7 +49,6 @@ class userService
 
     public function UpdateUser($userData, $id): User
     {
-        //TODO! данная проверка некорректна если придет пустое значение поля, то он оставить старое значение
         $result = User::findorFail($id);
         $userData['password'] = Hash::make($userData['password']);
 
