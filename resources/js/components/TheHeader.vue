@@ -69,7 +69,9 @@ export default {
     logout() {
       axios.post(r('logout'))
         .then(res => {
+          console.log(res);
           localStorage.removeItem('x_xsrf_token');
+          //TODO! так как в boostrap.js указал переадрисацию то получается задвоение редериктов
           this.$router.push({ name: 'AuthLogin' });
         }).catch((error) => {
           console.log(error.response);
@@ -81,10 +83,10 @@ export default {
     console.log(this.token),
     console.log('Component Header mounted.');
   },
-  updated() {
-    this.getToken();
-    console.log('Component Header updated.');
-  }
+  // updated() {
+  //   this.getToken();
+  //   console.log('Component Header updated.');
+  // }    this.$forceUpdate(),
 }
 </script>
 

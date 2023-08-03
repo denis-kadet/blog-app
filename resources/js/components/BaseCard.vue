@@ -18,7 +18,7 @@
 export default {
     name: "BaseCard",
     mounted() {
-        // console.log(window.Laravel);
+        console.log('Component BaseCard mounted.')
     }
 };
 </script>
