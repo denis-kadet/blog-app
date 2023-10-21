@@ -12,12 +12,17 @@
           <li>
             <router-link class="nav-link px-2" :to="{ name: 'PageHome' }">Главная</router-link>
           </li>
-          <li><a href="#" class="nav-link px-2">Блог</a></li>
-          <li><a href="#" class="nav-link px-2">Контакты</a></li>
-          <li><a href="#" class="nav-link px-2">Вопросы</a></li>
           <li>
-              <router-link class="nav-link px-2" :to="{ name: 'PageUsers' }">О себе</router-link>
+              <router-link class="nav-link px-2" :to="{ name: 'PageAbout' }">Портфолио</router-link>
           </li>
+          <li><a href="#" class="nav-link px-2">Блог</a></li>
+          <li>
+            <router-link class="nav-link px-2" :to="{ name: 'PageContacts' }">Контакты</router-link>
+          </li>
+          <li>
+            <router-link class="nav-link px-2" :to="{ name: 'PageTeam' }">Команда</router-link>
+          </li>
+
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

@@ -26,6 +26,21 @@ const router = new VueRouter({
             name: 'PageUsers',
             component: () => import('./components/Users'),
         },
+        {
+            path: '/contacts',
+            name: 'PageContacts',
+            component: () => import('./components/PageContacts'),
+        },
+        {
+            path: '/about',
+            name: 'PageAbout',
+            component: () => import('./components/PageAbout'),
+        },
+        {
+            path: '/team',
+            name: 'PageTeam',
+            component: () => import('./components/PageTeam'),
+        },
     ],
     mode: 'history'
 });

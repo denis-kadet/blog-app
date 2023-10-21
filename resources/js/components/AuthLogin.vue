@@ -58,11 +58,13 @@ export default {
                         }
                         localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
                         this.$router.push('/');
-                    }).catch((error) => {
+                    }).catch(errors => {
                         console.log(errors.response);
-                        if (error.response.status == 403) {
-                            console.log(error.response.data.errors);
-                            this.error = error.response.data.errors;
+                        if (errors.response != undefined && errors.response.status == 403) {
+                            console.log(errors.response.data.errors);
+                            this.error = errors.response.data.errors;
+                        } else {
+                            console.log(errors.message)
                         }
                     }
                     );

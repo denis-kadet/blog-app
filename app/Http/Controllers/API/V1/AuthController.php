@@ -31,17 +31,12 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         try{
-        $data = $request->validated();
-        $data = $request->validated();
-
-        if (!Auth::attempt($data)) {
-            return response()->json(['status' => 403, 'success' => 'false', 'errors' => 'Неверный email или пароль'], 403);
-        }
             $data = $request->validated();
 
-        if (!Auth::attempt($data)) {
-            return response()->json(['status' => 403, 'success' => 'false', 'errors' => 'Неверный email или пароль'], 403);
-        }
+            if (!Auth::attempt($data)) {
+                return response()->json(['status' => 403, 'success' => 'false', 'errors' => 'Неверный email или пароль'], 403);
+            }
+
             //генерирует новую сессию, чтобы предовратить фиксацию сессии
             $request->session()->regenerate();
 
@@ -63,14 +58,8 @@ class AuthController extends Controller
         }catch (Exception $e) {
             return response()->json(['status' => 422, 'success' => 'false', 'errors' => $e->getMessage()], 422);
         }
-        
-
-        // if (!Auth::attempt($data)) {
-        //     return response()->json(['status' => 403, 'success' => 'false', 'errors' => 'Неверный email или пароль'], 403);
-        // }
-        //генерирует новую сессию, чтобы предовратить фиксацию сессии
-
     }
+    
     //TODO переименовать на logoutAuth
     public function logout(Request $request)
     {
