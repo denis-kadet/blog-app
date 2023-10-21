@@ -46,25 +46,28 @@ export default {
     },
     methods: {
         login() {
-            axios.get('/sanctum/csrf-cookie').then(res => {
+            axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post(r("login"),
                     {
                         email: this.email,
                         password: this.password,
                     }).then((response) => {
-                        console.log(response.data)
-                        if (response.data.success) {
-                            localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
-                            this.$router.push('/')
+                        console.log(response);
+                        if (!response.data.success) {
+                            this.error = response.data.message;
+                        }
+                        localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
+                        this.$router.push('/');
+                    }).catch(errors => {
+                        console.log(errors.response);
+                        if (errors.response != undefined && errors.response.status == 403) {
+                            console.log(errors.response.data.errors);
+                            this.error = errors.response.data.errors;
                         } else {
-                            this.error = response.data.message
+                            console.log(errors.message)
                         }
-                    }).catch(error => {
-                        if (error.response.status == 403) {
-                            console.log(error.response.data.errors);
-                            this.error = error.response.data.errors;
-                        }
-                    });
+                    }
+                    );
             });
 
         }

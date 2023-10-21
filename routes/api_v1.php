@@ -24,7 +24,7 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/', [UserController::class, 'index']);
-    Route::post('users/{user}', [UpdateAvatar::class, '__invoke'])->name('users.updateavatar');
+    // Route::post('users/{user}', [UpdateAvatar::class, '__invoke'])->name('users.updateavatar');
     Route::apiResource('users', UserController::class);
     //выйти
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');

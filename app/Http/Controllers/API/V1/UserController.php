@@ -26,7 +26,7 @@ class UserController extends Controller
         try {
             $result = new UserCollection(User::all());
         } catch (Exception $e) {
-            return response()->json(['status' => 404, 'errors' => $e], 404);
+            return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }
         return response()->json(['status' => 200, 'data' => $result], 200);
     }
@@ -42,7 +42,7 @@ class UserController extends Controller
     {
         try {
             $user = $userService->storeUser($request);
-            return response()->json(['status' => 201, 'created' => 'success', 'data' => $user], 201);
+            return response()->json(['status' => 201, 'success' => 'true', 'data' => $user], 201);
         } catch (Exception $e) {
             return response()->json(['status' => 404, 'errors' => $e->getMessage()], 404);
         }

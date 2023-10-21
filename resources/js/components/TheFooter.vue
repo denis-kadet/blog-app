@@ -73,4 +73,9 @@ export default {
 };
 </script>
     
-<style scoped></style>
+<style scoped>
+footer {
+  /* Чтобы footer не уменьшался */
+  flex-shrink: 0;
+}
+</style>

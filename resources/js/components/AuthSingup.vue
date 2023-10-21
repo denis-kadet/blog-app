@@ -223,7 +223,7 @@ export default {
             if (val.length < 8 && val.length > 0) {
                 return { 'is-invalid': true };
             }
-            
+            //проверка на регулярку
             if(!regularExpression.test(val)){
                 return { 'is-invalid': true }; 
             }
