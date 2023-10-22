@@ -55,6 +55,12 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
+    mailhog:
+        image: mailhog/mailhog:latest
+        restart: always
+        ports:
+        - 1025:1025
+        - 8025:8025
 networks:
     sail:
         driver: bridge
