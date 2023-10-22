@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\LoginResource;
 use App\Http\Requests\API\V1\LoginUserRequest;
 use App\Http\Requests\API\V1\StoreUserRequest;
+use App\Mail\User\RegSendEmal;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -22,6 +24,8 @@ class AuthController extends Controller
             $user = $userService->storeUser($request);
             $token = $user->createToken('apiToken')->plainTextToken;
 
+            Mail::to($user['email'])->send(new RegSendEmal($user));
+            
             return response()->json(['status' => 201, 'created' => 'success', 'data' => $user, 'token' =>  $token], 201);
         } catch (Exception $e) {
             return response()->json(['status' => 422, 'errors' => $e->getMessage()], 422);
