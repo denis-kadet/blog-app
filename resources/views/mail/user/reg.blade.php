@@ -2,7 +2,7 @@
 # Introduction
 
 
-{{ $user }}
+{{ print_r($user); }}
 
 
 The body of your message.
