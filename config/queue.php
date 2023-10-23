@@ -66,8 +66,8 @@ return [
             'driver' => 'redis',
             'connection' => 'default',
             'queue' => env('REDIS_QUEUE', 'default'),
-            'retry_after' => 90,
-            'block_for' => 3,
+            'retry_after' => 90,//максимально время, в течении которого выполнятестя отложеное задание
+            'block_for' => 0, 
             'after_commit' => false,
         ],
 

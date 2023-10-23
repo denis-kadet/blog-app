@@ -4,15 +4,14 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Laravel\Sanctum\HasApiTokens;
 use App\Services\userService;
+use App\Jobs\Email\SendEmailJob;
+use Laravel\Sanctum\HasApiTokens;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\LoginResource;
 use App\Http\Requests\API\V1\LoginUserRequest;
 use App\Http\Requests\API\V1\StoreUserRequest;
-use App\Mail\User\RegSendEmal;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -24,7 +23,8 @@ class AuthController extends Controller
             $user = $userService->storeUser($request);
             $token = $user->createToken('apiToken')->plainTextToken;
 
-            Mail::to($user['email'])->send(new RegSendEmal($user));
+            SendEmailJob::dispatch($user);//->onConnection('redis')->onQueue('default');
+            //Mail::to($user['email'])->queue(new RegSendEmal($user));
             
             return response()->json(['status' => 201, 'created' => 'success', 'data' => $user, 'token' =>  $token], 201);
         } catch (Exception $e) {

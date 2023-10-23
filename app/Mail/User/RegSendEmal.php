@@ -2,16 +2,17 @@
 
 namespace App\Mail\User;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RegSendEmal extends Mailable
+class RegSendEmal extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    protected $user;
     /**
      * Create a new message instance.
      *
@@ -19,7 +20,7 @@ class RegSendEmal extends Mailable
      */
     public function __construct($user)
     {
-       $this->$user = $user; 
+       $this->user = $user; 
     }
 
     /**
