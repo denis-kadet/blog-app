@@ -56,7 +56,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function messages()
     {
-        return[
+        return [
             'nickname.max' => 'Название не может быть более 50 символов',
             'firstname.max' => 'Название не может быть более 20 символов',
             'lastname.max' => 'Название не может быть более 30 символов',
