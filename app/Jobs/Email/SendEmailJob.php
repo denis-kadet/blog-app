@@ -40,7 +40,7 @@ class SendEmailJob implements ShouldQueue
     {
         Redis::throttle('my-mailtrap')->allow(2)->every(1)->then(function (){
             $recipient = $this->user['email'];
-            Mail::to($recipient)->queue(new RegSendEmal($this->user));
+            Mail::to($recipient)->send(new RegSendEmal($this->user));
             Log::info('Emailed order ' . $recipient);
         }, function () {
             return $this->release(2);

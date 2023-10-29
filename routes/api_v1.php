@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\UpdateAvatar;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\UserController;
+use App\Http\Controllers\API\V1\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,10 @@ Route::middleware('auth:sanctum')->group(function(){
     //выйти
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+
+//форма обратной связи
+Route::post('/contacts', ContactController::class)->name('contacts');
 
 Route::fallback(function(){
     return response()->json([

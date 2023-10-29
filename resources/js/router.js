@@ -45,25 +45,26 @@ const router = new VueRouter({
     mode: 'history'
 });
 
-router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('x_xsrf_token');
-    if (!token) {
-        if (to.name === 'AuthLogin' || to.name === 'AuthSingup') {
-            return next();
-        } else {
-            return next({
-                name: 'AuthLogin'
-            })
-        }
-    }
+//сюда надо добавлять роуты, которым нужен доступ через мидлвея
+// router.beforeEach((to, from, next) => {
+//     const token = localStorage.getItem('x_xsrf_token');
+//     if (!token) {
+//         if (to.name === 'AuthLogin' || to.name === 'AuthSingup') {
+//             return next();
+//         } else {
+//             return next({
+//                 name: 'AuthLogin'
+//             })
+//         }
+//     }
     
-    if (token && to.name === 'AuthLogin' || to.name === 'AuthSingup') {
-            return next({
-                name: 'PageHome'
-            })
-    }
+//     if (token && to.name === 'AuthLogin' || to.name === 'AuthSingup') {
+//             return next({
+//                 name: 'PageHome'
+//             })
+//     }
 
-    next();
-})
+//     next();
+// })
 
 export default router
