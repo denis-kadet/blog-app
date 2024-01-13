@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <!-- https://getbootstrap.com/docs/5.0/examples/album/ -->
         <div class="card" style="width: 18rem;">
             <img src="../../../public/storage/uploads/avatar/36q6ypejFROM0311i9HQuKvVLh8PHK0N1mJDsVW4.jpg"
                 class="card-img-top" alt="adfdf">

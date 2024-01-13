@@ -1,14 +1,14 @@
 <template>
-    <HomeCarousel></HomeCarousel>
+    <webbase-card></webbase-card>
 </template>
       
     
 <script>
-import HomeCarousel from './HomeCarousel';
+import BaseCard from './BaseCard';
 export default {
     name: "PageHome",
     components: {
-        'HomeCarousel': HomeCarousel,
+        'webbase-card': BaseCard,
     },
 };
 </script>

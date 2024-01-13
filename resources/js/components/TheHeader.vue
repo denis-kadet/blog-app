@@ -15,27 +15,29 @@
           <li>
               <router-link class="nav-link px-2" :to="{ name: 'PageAbout' }">Портфолио</router-link>
           </li>
-          <li><a href="#" class="nav-link px-2">Блог</a></li>
+          <li class="d-none">
+            <a href="#" class="nav-link px-2">Блог</a>
+          </li>
           <li>
             <router-link class="nav-link px-2" :to="{ name: 'PageContacts' }">Контакты</router-link>
           </li>
-          <li>
+          <li class="d-none">
             <router-link class="nav-link px-2" :to="{ name: 'PageTeam' }">Команда</router-link>
           </li>
 
         </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+        <form class="d-none col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
           <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
         </form>
 
-        <div v-if="!token" class="text-end">
+        <div v-if="!token" class="d-none text-end">
           <button type="button" class="btn btn-outline-light me-2">
             <router-link :to="{ name: 'AuthLogin' }">Вход</router-link></button>
           <button type="button" class="btn btn-warning"><router-link
               :to="{ name: 'AuthSingup' }">Регистрация</router-link></button>
         </div>
-        <div v-else class="dropdown text-end">
+        <div v-else class="d-none dropdown text-end">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
             data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="32" height="32">
